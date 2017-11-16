@@ -12,24 +12,23 @@ class TodoList extends Component {
     }
   }
 
+  componentWillMount() {
+    console.log("componentWillMount")
+  }
+
   componentDidMount(){
     console.log("Hello from Did Mount")
     // some api call
-    this.setState({
-      tasks: [
-        {name: "clean the dishes"},
-        {name: "learn something"}
-      ]
-    })
+    let current = this.state.tasks.slice();
+    current.push({name: "clean the dishes"})
+    current.push({name: "learn something"})
+    this.setState({tasks:current})
   }
 
   showMessage = () => {
     let current = this.state.tasks.slice();
     current.push({name: "newone"})
     this.setState({tasks:current})
-  }
-  componentWillMount(){
-    console.log("Hello from will Mount")
   }
 
   shouldComponentUpdate(){
@@ -38,7 +37,7 @@ class TodoList extends Component {
   }
 
   updateInputValue = (evt) => {
-    this.setState({inputValue: evt.target.value})
+    this.setState({inputValue:evt.target.value})
   }
 
   addElement = (e) => {
@@ -48,12 +47,13 @@ class TodoList extends Component {
   }
 
   render() {
-    console.log("Hello from Render")
+    console.log("Hello from Render", this.state)
     return (
       <ul>
       {this.state.tasks.map(item =>
         <MyListItem name={item.name} onClick={this.showMessage}/>
-        )
+      )
+      }
       }
       <input value={this.state.inputValue} onChange={evt => this.updateInputValue(evt)} onKeyPress={e => this.addElement(e)}/>
       {this.state.custom && <ErrorBoundary><CustomItem custom={this.state.custom}/></ErrorBoundary>}
@@ -61,6 +61,8 @@ class TodoList extends Component {
     );
   }
 }
+
+const MyListItem = ({name, onClick}) => <li onClick={onClick}>{concatName(name)} {2+2}</li>
 
 class CustomItem extends React.Component {
     constructor(props) {
@@ -76,14 +78,11 @@ class CustomItem extends React.Component {
         nextProps.custom = undefined;
         nextProps.custom.toString();
       }
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
 
     }
     render() {
       return(
-      <div>custom {this.state.custom}</div>
+      <div>{this.state.custom}</div>
     )
     }
 }
@@ -109,9 +108,7 @@ class ErrorBoundary extends React.Component {
     }
 }
 
-const MyListItem = ({name, onClick}) => <li onClick={onClick}>{concat(name)} {2+2} </li>
-
-const concat = (name) => {
-  return "costam" + name
+const concatName = (name) => {
+  return name + " lol"
 }
 export default TodoList

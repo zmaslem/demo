@@ -8,8 +8,8 @@ const AppRouter = () => {
   return <div>
       <Router history = { hashHistory }>
         <Route path = "/" component ={App}>
-        <IndexRoute component={LandingPage}/>
-        <Router path = "/todos" component = {TodoList}/>
+          <IndexRoute component={LandingPage}/>
+          <Router path = "/todos" component = {TodoList}/>
         </Route>
       </Router>
     </div>
